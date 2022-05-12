@@ -27,7 +27,7 @@
         {
             if (!optionsBuilder.IsConfigured)
             {
-                optionsBuilder.UseSqlServer("Server=.\\sqlexpress;Database=SettingDb;TrustedConnection=True");
+                optionsBuilder.UseSqlServer("Server=.\\sqlexpress;Database=SettingDb;Trusted_Connection=True");
             }
             base.OnConfiguring(optionsBuilder);
         }

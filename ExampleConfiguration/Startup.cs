@@ -6,6 +6,7 @@ namespace ExampleConfiguration
     using System.Threading.Tasks;
 
     using ExampleConfiguration.Data;
+    using ExampleConfiguration.Other;
 
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
@@ -27,6 +28,8 @@ namespace ExampleConfiguration
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<ApplicationDbContext>();
+            services.Configure<SettingOption>(Configuration.GetSection("Settings"));
+
             services.AddControllersWithViews();
         }
 
@@ -45,7 +48,7 @@ namespace ExampleConfiguration
             }
             app.UseHttpsRedirection();
             app.UseStaticFiles();
-
+            
             app.UseRouting();
 
             app.UseAuthorization();
