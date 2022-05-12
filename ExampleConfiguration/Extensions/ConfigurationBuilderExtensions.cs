@@ -11,14 +11,9 @@
 
     public static class ConfigurationBuilderExtensions
     {
-        public static IConfigurationBuilder AddEntityConfiguration(
-            this IConfigurationBuilder builder)
+        public static IConfigurationBuilder AddSqlServer(this IConfigurationBuilder builder, string connectionString)
         {
-            var tempConfig = builder.Build();
-            var connectionString =
-                tempConfig.GetConnectionString("DbContextString");
-
-            return builder.Add(new EntityConfigurationSource(connectionString));
+            return builder.Add(new EntityConfigurationSource { ConnectionString = connectionString });
         }
     }
 }

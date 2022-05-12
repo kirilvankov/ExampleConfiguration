@@ -5,16 +5,17 @@
     using System.Linq;
     using System.Threading.Tasks;
 
+    using ExampleConfiguration.Watchers;
+
     using Microsoft.Extensions.Configuration;
 
     public class EntityConfigurationSource : IConfigurationSource
     {
-        private readonly string _connectionString;
-
-        public EntityConfigurationSource(string connectionString) =>
-            _connectionString = connectionString;
-
-        public IConfigurationProvider Build(IConfigurationBuilder builder) =>
-            new EntityConfigurationProvider(_connectionString);
+        public string ConnectionString { get; set; }
+        public Watcher Watcher { get; set; }
+        public IConfigurationProvider Build(IConfigurationBuilder builder)
+        {
+            return new EntityConfigurationProvider(this);
+        }
     }
 }

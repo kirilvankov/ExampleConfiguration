@@ -26,7 +26,7 @@ namespace ExampleConfiguration
                 .ConfigureAppConfiguration(builder =>
                 {
                     
-                    builder.AddEntityConfiguration();
+                    builder.AddSqlServer("Server=.\\sqlexpress;Database=SettingDb;Trusted_Connection=True");
                 })
                 .ConfigureWebHostDefaults(webBuilder =>
                 {

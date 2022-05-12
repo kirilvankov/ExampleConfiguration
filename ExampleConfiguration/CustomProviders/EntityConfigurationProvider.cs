@@ -9,19 +9,32 @@
     using ExampleConfiguration.DataModels;
 
     using Microsoft.Extensions.Configuration;
+    using Microsoft.Extensions.Primitives;
 
     public class EntityConfigurationProvider : ConfigurationProvider
     {
-        private readonly string _connectionString;
+        private readonly EntityConfigurationSource _source;
+        private readonly IDisposable _changeTokenRegistration;
 
-        public EntityConfigurationProvider(string connectionString) =>
-            _connectionString = connectionString;
+        public EntityConfigurationProvider(EntityConfigurationSource source)
+        {
+            this._source = source;
+            if (_source.Watcher != null)
+            {
+                _changeTokenRegistration = ChangeToken.OnChange(
+                    () => _source.Watcher.Refresh(),
+                    Load
+                );
+            }
+
+        }
+
 
         public override void Load()
         {
-            using var dbContext = new ApplicationDbContext(_connectionString);
+            using var dbContext = new ApplicationDbContext(_source.ConnectionString);
 
-            dbContext.Database.EnsureCreated();
+            //dbContext.Database.EnsureCreated();
 
             Data = dbContext.Settings.Any()
                 ? dbContext.Settings.ToDictionary(c => c.Key, c => c.Value, StringComparer.OrdinalIgnoreCase)
